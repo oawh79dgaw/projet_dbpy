@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS excercices (
 );
 
 CREATE TABLE IF NOT EXISTS results (
-    id INT AUTO_INCREMENT PRIMARY KEY ,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
     excercice_id INT NOT NULL,
     FOREIGN KEY (excercice_id)
     REFERENCES excercices(id),
