@@ -47,8 +47,17 @@ def next(event):
 
 
 def save_game(event):
-    print("dans save")
-    # TODO
+    username = pseudo.get().strip()
+
+    if not username:
+        return False
+    
+    excercice_id = database.get_excercice(exercise)
+    if excercice_id is None:
+        print("Excercice doesn't exist.")
+        return False
+
+    database.save_result(username, excercice_id, start_date, nbtrials, nbsuccess)
 
 
 def test(event):
@@ -96,11 +105,18 @@ def open_window_info_02(window):
     lbl_duration.grid(row=0,column=2, ipady=5, padx=10,pady=10)
 
     tk.Label(window_info02, text='Pseudo:', font=("Arial", 15)).grid(row=1, column=0, padx=5, pady=5)
-    entry_pseudo = tk.Entry(window_info02, font=("Arial", 15))
-    # entry_pseudo.pack(ipadx=2, ipady=10, padx=5,pady=5)
+    global pseudo
+
+    pseudo = tk.StringVar(value="Gaston")
+
+    entry_pseudo = tk.Entry(
+        window_info02,
+        textvariable=pseudo,
+        font=("Arial", 15)
+    )
     entry_pseudo.grid(row=1, column=1)
 
-    lbl_result = tk.Label(window_info02, text=f"{pseudo}  Essais réussis : 0/0", font=("Arial", 15))
+    lbl_result = tk.Label(window_info02, text=f"{pseudo.get()}  Essais réussis : 0/0", font=("Arial", 15))
     lbl_result.grid( row=1, column=2,columnspan=3, ipady=5, padx=20,pady=20)
 
     label_n1 = tk.Label(window_info02, text="n1:",font=("Arial", 15))

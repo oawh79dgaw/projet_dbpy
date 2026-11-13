@@ -1,0 +1,1 @@
+FIX The trials and trials_ok registering in "info02.py" and "info05.py"

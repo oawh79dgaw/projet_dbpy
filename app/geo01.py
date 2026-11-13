@@ -49,7 +49,7 @@ def canvas_click(event):
     else:
         window_geo01.configure(bg="green")
         nbsuccess += 1
-    lbl_result.configure(text=f"{pseudo} Essais réussis : {nbsuccess} / {nbtrials}")
+    lbl_result.configure(text=f"{pseudo.get()} Essais réussis : {nbsuccess} / {nbtrials}")
     window_geo01.update()
     time.sleep(1) # delai 1s
     next_point(event=None)
@@ -88,8 +88,17 @@ def next_point(event):
 
 
 def save_game(event):
-    # TODO
-    print("dans save")
+    username = pseudo.get().strip()
+
+    if not username:
+        return False
+    
+    excercice_id = database.get_excercice(exercise)
+    if excercice_id is None:
+        print("Excercice doesn't exist.")
+        return False
+
+    database.save_result(username, excercice_id, start_date, nbtrials, nbsuccess)
 
 
 def display_timer():
@@ -121,7 +130,15 @@ def open_window_geo_01(window):
     lbl_duration.grid(row=0,column=2, ipady=5, padx=10,pady=10)
 
     tk.Label(window_geo01, text='Pseudo:', font=("Arial", 15)).grid(row=1, column=0, padx=5, pady=5)
-    entry_pseudo = tk.Entry(window_geo01, font=("Arial", 15))
+    global pseudo
+
+    pseudo = tk.StringVar(value="Gaston")
+
+    entry_pseudo = tk.Entry(
+        window_geo01,
+        textvariable=pseudo,
+        font=("Arial", 15)
+    )
     entry_pseudo.grid(row=1, column=1)
 
     lbl_result = tk.Label(window_geo01, text=f"Essais réussis : 0/0", font=("Arial", 15))

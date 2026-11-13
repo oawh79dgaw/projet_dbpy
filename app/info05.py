@@ -191,8 +191,17 @@ def sl_v(event):
 
 
 def save_game(event):
-    print("dans save")
-    #TODO
+    username = pseudo.get().strip()
+
+    if not username:
+        return False
+    
+    excercice_id = database.get_excercice(exercise)
+    if excercice_id is None:
+        print("Excercice doesn't exist.")
+        return False
+
+    database.save_result(username, excercice_id, start_date, nbtrials, nbsuccess)
 
 
 def display_timer():
@@ -222,8 +231,16 @@ def open_window_info_05(window):
     lbl_duration.grid(row=0,column=2, ipady=5, padx=10,pady=10)
 
     tk.Label(window_info05, text='Pseudo:', font=("Arial", 15)).grid(row=1, column=0, padx=5, pady=5, sticky='E')
-    entry_pseudo = tk.Entry(window_info05, font=("Arial", 15))
-    entry_pseudo.grid(row=1, column=1,sticky='W')
+    global pseudo
+
+    pseudo = tk.StringVar(value="Gaston")
+
+    entry_pseudo = tk.Entry(
+        window_info05,
+        textvariable=pseudo,
+        font=("Arial", 15)
+    )
+    entry_pseudo.grid(row=1, column=1)
 
     lbl_result = tk.Label(window_info05, text=f"Essais réussis : 0/0", font=("Arial", 15))
     lbl_result.grid( row=1, column=2, ipady=5, padx=20,pady=10)
